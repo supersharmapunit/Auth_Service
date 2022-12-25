@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { StatusCodes } = require('http-status-codes');
 
 const UserRepository = require('../repository/user-repository');
 const { JWT_KEY } = require('../config/serverConfig');
 const AppErrors = require('../utils/error-handler');
+const ClientError = require('../utils/client-error');
 
 class UserService {
 
@@ -61,17 +63,23 @@ class UserService {
             const passwordMatch = this.checkPassword(plainPassword, user.password);
             if(!passwordMatch){
                 console.log("Password doesn't match");
-                throw {
-                    error: 'Incorrect Password'
-                };
+                throw new ClientError(
+                    'Unauthorized',
+                    'Incorrect Password',
+                    'Passoword does not match',
+                    StatusCodes.UNAUTHORIZED
+                );
             }
 
             // step 3 -> if passwords match then create a token and send it to the user
             const newJWT = this.createToken({email: user.email, id: user.id});
             return newJWT;
         } catch (error) {
+            if (error.name == 'AttributeNotFound') {
+                throw error;
+            }
             console.log("Something went wrong in the sign in process");
-            throw { error };
+            throw  error ;
         }
     }
 
