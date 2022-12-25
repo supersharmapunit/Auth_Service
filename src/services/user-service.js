@@ -4,8 +4,8 @@ const { StatusCodes } = require('http-status-codes');
 
 const UserRepository = require('../repository/user-repository');
 const { JWT_KEY } = require('../config/serverConfig');
-const AppErrors = require('../utils/error-handler');
-const ClientError = require('../utils/client-error');
+const AppErrors = require('../utils/errors/error-handler');
+const ClientError = require('../utils/errors/client-error');
 
 class UserService {
 

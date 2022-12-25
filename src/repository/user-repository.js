@@ -1,8 +1,8 @@
 const { StatusCodes } = require('http-status-codes');
 
 const { User, Role } = require('../models/index');
-const ClientError = require('../utils/client-error');
-const ValidationError = require('../utils/validation-error');
+const ClientError = require('../utils/errors/client-error');
+const ValidationError = require('../utils/errors/validation-error');
 
 class UserRepository {
 
